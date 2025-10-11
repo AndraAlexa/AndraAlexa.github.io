@@ -110,9 +110,13 @@
             <img src="https://media.licdn.com/dms/image/v2/D4E03AQH_A_HRfcdqSw/profile-displayphoto-crop_800_800/B4EZmflVHfKgAQ-/0/1759318987995?e=1762992000&v=beta&t=-hDI2lRYYx4ZoXZzMk72UnDIjBgsBToOX6BQMbPwQ9k" alt="Andreea Loredana Cretu" class="w-36 h-36 rounded-full ring-4 ring-offset-4 ring-offset-gray-800 ring-rose-500 object-cover flex-shrink-0">
             <div>
                 <h1 class="text-4xl font-bold">Andreea Loredana Cretu, PhD, MBA</h1>
-                <p class="text-xl text-indigo-300 font-semibold mt-1">Healthcare & Life Sciences Ecosystem Leader</p>
+                <p class="text-xl text-indigo-300 font-semibold mt-1">Expert in translational health innovation and early-stage ventures</p>
                 <p class="text-gray-300 mt-3 max-w-2xl mx-auto md:mx-0">
-                    Innovation and ecosystem leader with 11 years of cross-sector experience in healthcare, medtech, and life science entrepreneurship. Actively engaged in driving data-driven innovation and supporting adoption of emerging technologies, including AI in health.
+                    Innovation and ecosystem leader with a decade of cross-sector experience in healthcare,
+                    medtech, and life science entrepreneurship across the DACH region. Track record building
+                    translational pipelines and connecting researchers, founders, and investors to accelerate
+                    the journey from lab to market. Actively engaged in driving data-driven innovation
+                    and supporting adoption of emerging technologies, including AI in health and diagnostics.
                 </p>
                 <div class="mt-4 flex flex-wrap gap-4 justify-center md:justify-start">
                     <button id="gemini-button" class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
@@ -204,7 +208,7 @@
             { type: 'award', date: '2019', title: 'McKinsey Next Generation Women Leaders Award', organization: 'McKinsey & Company', details: ["Recognized for exceptional leadership potential in business transformation."]},
             { type: 'work', date: 'Oct 2015 - Nov 2019', title: 'Neuroscience Researcher and Lecturer', organization: 'ETH Zurich, Switzerland', details: ["Conducted research in human systems neuroscience, publishing in peer-reviewed journals.", "Taught and coordinated an MSc course and supervised 12 BSc/MSc research projects.", "Participated in BrainHack Zurich 2018, applying machine-learning to fMRI data."]},
             { type: 'education', date: '2015 - 2019', title: 'PhD in Cognitive Neuroscience', organization: 'ETH Zurich, Switzerland', details: []},
-            { type: 'work', date: 'Nov 2014 - Sep 2015', title: 'Student Assistant, Sound Learning Group', organization: 'Max Planck Institute for Psycholinguistics, Netherlands', details: ["Supported a project on motor cortex involvement in speech perception."]},
+            { type: 'work', date: 'Nov 2014 - Sep 2015', title: 'Research Assistant (part-time)', organization: 'Max Planck Institute for Psycholinguistics, Netherlands', details: ["Supported a project on motor cortex involvement in speech perception."]},
             { type: 'education', date: '2013 - 2015', title: 'MSc in Cognitive Neuroscience', organization: 'Radboud University Donders Institute, Netherlands', details: []},
             { type: 'education', date: '2009 - 2013', title: 'BSc in Biomedical Engineering', organization: 'University of Medicine and Pharmacy, Iasi, Romania', details: []},
         ];
@@ -342,7 +346,7 @@
         });
 
         function generateResumeText() {
-            let text = `Name: Andreea Loredana Cretu, PhD, MBA\nTitle: Healthcare & Lifesciences Ecosystem Leader\nSummary: Innovation and ecosystem leader with 11 years of cross-sector experience...\n\n`;
+            let text = `Name: Andreea Loredana Cretu, PhD, MBA\nTitle: Expert in translational health innovation and early-stage ventures\nSummary: Innovation and ecosystem leader with a decade of cross-sector experience...\n\n`;
             text += "## Startup Ecosystem & Advisory Impact\n";
             startupImpactData.forEach(item => {
                 const descText = Array.isArray(item.description) ? '\n  - ' + item.description.join('\n  - ') : item.description;
@@ -361,5 +365,4 @@
     </script>
 </body>
 </html>
-
 
