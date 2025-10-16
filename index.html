@@ -147,6 +147,25 @@
             <div id="competencies-container" class="flex flex-wrap justify-center gap-3 text-center">
             </div>
         </section>
+
+        <!-- Opinion Section -->
+        <section id="opinion" class="mb-24">
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-200/80">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Opinion: Future-Ready Education</h2>
+                <div class="max-w-3xl mx-auto text-center">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        The world is evolving at an unprecedented pace, driven by rapid technological and social shifts. Traditional educational models, designed for a bygone era, are no longer sufficient. It is our fundamental responsibility to equip the next generation with the skills to navigate a future we can only begin to imagine. This requires a paradigm shift from rote memorization to fostering adaptability, critical thinking, and emotional intelligence. We must teach our children *how* to learn, unlearn, and relearn, empowering them to become lifelong architects of their own knowledge.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Integrating technology and AI into the classroom is not merely about modernization; it's about personalization and empowerment. These tools can create tailored learning journeys that cater to individual student needs, freeing educators to act as mentors and guides. By embracing technology, we don't just prepare students for future jobs; we cultivate a generation of innovators, problem-solvers, and compassionate global citizens ready to shape a better tomorrow.
+                    </p>
+                    <blockquote class="mt-8 border-l-4 border-custom-purple pl-6 italic">
+                        <p class="text-xl text-gray-800">“Education is the passport to the future, for tomorrow belongs to those who prepare for it today.”</p>
+                        <cite class="mt-4 block font-semibold not-italic text-gray-500">— Malcolm X</cite>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
         
         <!-- Events & Engagements Section -->
         <section id="events-engagements" class="mb-24">
@@ -198,7 +217,8 @@
             { name: "Child Education & Safeguarding", color: "purple", description: "Deeply committed to creating safe, engaging, and evidence-based educational experiences, with a strong understanding of child development and pedagogy." },
             { name: "Behavioral Science in HR", color: "purple", description: "Leveraging a Master's in Behavioral Science to inform conflict resolution, enhance communication, and design human-centered HR systems and processes." },
             { name: "HRIS & Process Optimization", color: "purple", description: "Proven ability to leverage technology to streamline HR workflows, improve data accuracy, and enhance the overall employee experience." },
-            { name: "Training & Development", color: "purple", description: "Experienced in designing and delivering training programs for diverse audiences, from K-12 learners to adult professionals, fostering growth and development." }
+            { name: "Training & Development", color: "purple", description: "Experienced in designing and delivering training programs for diverse audiences, from K-12 learners to adult professionals, fostering growth and development." },
+            { name: "Strategic Advisory & Thought Leadership", color: "purple", description: "Articulating well-researched opinions and strategic advice to guide decision-making and shape organizational culture." }
         ];
 
         const timelineData = [
@@ -209,7 +229,7 @@
             { type: 'work', date: '2016–2018', title: 'Co-founder & Manager', organization: 'Association for Multidisciplinary Initiatives, Romania', details: ["Designed and delivered small projects on mental-health stigma reduction and sex-education programs that help parents navigate the topic at home."]},
             { type: 'work', date: '2016', title: 'Helpline Counsellor (CBT-informed)', organization: 'Suicide Prevention Line, Romania', details: ["Crisis de-escalation and safety planning informed by CBT techniques;", "Documentation and referral protocols."]},
             { type: 'work', date: 'Sep 2015–Feb 2016', title: 'Research Assistant', organization: 'Grenoble École de Management, France', details: ["Analyzed digital/connected-health models and GDPR;", "Experience translating research to operational policy."]},
-            { type: 'work', date: '2014-2015', title: 'Intern', organization: 'Trimbos Institute for Mental Health and Addiction, Netherlands', details: ["RCT study testing the effectiveness of a video game on identity formation (autonomy, competence, relatedness)/ “Surviving Independence”, a video game based intervention for 1st year undergraduate students."]},
+            { type: 'work', date: '2014-2015', title: 'Research Graduation Project', organization: 'Trimbos Institute for Mental Health and Addiction, Netherlands', details: ["RCT study testing the effectiveness of a video game on identity formation (autonomy, competence, relatedness)/ “Surviving Independence”, a video game based intervention for 1st year undergraduate students."]},
             { type: 'education', date: '2013 - 2015', title: 'MSc in Behavioral Science', organization: 'Radboud University, Netherlands', details: []},
             { type: 'education', date: '2014 - 2015', title: 'Honors Academy, Wider Implications of Cognitive Neuroscience Think Tank', organization: 'Radboud University & Rathenau Institute, Netherlands', details: []},
             { type: 'education', date: '2005 - 2008', title: 'BSc in Sociology', organization: 'Alexandru Ioan Cuza University, Romania', details: []}
@@ -268,7 +288,14 @@
         timelineData.forEach(item => {
             const hasDetails = item.details && item.details.length > 0;
             const colors = timelineColors[item.type];
-            const detailsHtml = hasDetails ? `<ul class="list-disc pl-5 space-y-1 text-gray-600">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>` : '';
+            const detailsHtml = hasDetails ? `<div class="space-y-2 text-gray-600">${item.details.map(d => `
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 mr-2 mt-1 flex-shrink-0 text-custom-purple" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>${d}</span>
+                </div>
+            `).join('')}</div>` : '';
             const chevronHtml = hasDetails ? `<svg class="chevron w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>` : '';
             
             timelineContainer.innerHTML += `
@@ -327,4 +354,5 @@
     </script>
 </body>
 </html>
+
 
