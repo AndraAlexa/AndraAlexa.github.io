@@ -3,505 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome@A.Alexa</title>
+    <title>Welcome@D.Harip</title>
+    <link rel="icon" href="https://media.licdn.com/dms/image/v2/C4E03AQG1dE3MaxWEyA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1611233533363?e=1762387200&v=beta&t=g3RwxHZRmuej61udbFdcBxsKRVXQ_EXTlNqQaPyPFWo">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-purple': '#7c3aed',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-        }
-        .gradient-header {
-             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         .timeline-item::before {
             content: '';
             position: absolute;
-            width: 1.25rem;
-            height: 1.25rem;
-            border-radius: 50%;
-            left: -0.625rem;
-            top: 0.25rem;
-            background-color: #ffffff;
-            border: 4px solid #667eea; 
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e2e8f0; 
         }
-        .card {
-            transition: all 0.3s ease-in-out;
+        .timeline-item:last-child::before {
+            display: none;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        .timeline-dot {
+            position: absolute;
+            left: 13px;
+            top: 6px; 
+            height: 16px;
+            width: 16px;
+            border-radius: 9999px;
+            z-index: 10;
         }
-        .skill-tag {
-            transition: all 0.2s ease-in-out;
+        .timeline-dot-work { background-color: #7c3aed; }
+        .timeline-dot-education { background-color: #dc2626; }
+        
+        .card-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding-top: 0;
         }
-        .skill-tag:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .card.open .card-details {
+            max-height: 1000px;
+            padding-top: 1rem;
         }
-        .elaborate-btn {
-            transition: all 0.2s ease-in-out;
+        .card.open .chevron {
+            transform: rotate(180deg);
         }
-        .elaborate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+        .chevron {
+            transition: transform 0.3s ease-in-out;
         }
-        #chat-bubble {
-            transition: all 0.3s ease-in-out;
+        #toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 0.5s ease-in-out;
+            z-index: 100;
         }
-        #chat-bubble:hover {
-            transform: scale(1.1);
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        #toast.show {
+            bottom: 30px;
         }
-         .chat-message.user .chat-message-bubble {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .chat-message.assistant .chat-message-bubble {
-            background-color: #f1f5f9;
-            color: #1e293b;
+        .tooltip-custom {
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
     </style>
 </head>
-<body class="text-slate-800">
-
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-6xl">
-        <!-- Header Section -->
-        <header class="gradient-header text-white rounded-2xl shadow-2xl p-8 flex flex-col sm:flex-row items-center gap-8">
-            <img src="https://media.licdn.com/dms/image/v2/C5603AQFVcGm9L_HJMA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1568576639832?e=1763596800&v=beta&t=QN5nJdmN_FpMFcNqO7cpJNO3ry-ext665CAwqrFR8Hw" alt="Andra Alexă" class="w-40 h-40 rounded-full shadow-lg border-4 border-white object-cover ring-4 ring-white/30">
-            <div class="text-center sm:text-left">
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Andra Alexă</h1>
-                <p class="mt-2 text-xl md:text-2xl font-medium text-white/90">Data Scientist & Pattern Recognition Professional</p>
-                <p class="mt-3 text-lg text-white/80 flex items-center justify-center sm:justify-start">
-                    📍 Barcelona, Spain
-                </p>
-                <div class="mt-4 flex justify-center sm:justify-start items-center gap-x-5 gap-y-3 flex-wrap">
-                    <a href="mailto:andra.alexa@email.com" class="flex items-center hover:text-white/80 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        Email
+<body class="bg-gradient-to-br from-purple-50 via-white to-violet-50">
+    
+    <div class="max-w-5xl mx-auto p-4 sm:p-8 pt-12">
+        <!-- Header/Profile Section -->
+        <header class="bg-gradient-to-r from-purple-900 via-gray-800 to-gray-900 text-white rounded-2xl shadow-2xl p-8 mb-12 flex flex-col md:flex-row items-center text-center md:text-left gap-8">
+            <img src="https://media.licdn.com/dms/image/v2/C4E03AQG1dE3MaxWEyA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1611233533363?e=1762387200&v=beta&t=g3RwxHZRmuej61udbFdcBxsKRVXQ_EXTlNqQaPyPFWo" alt="Dana Harip" class="w-36 h-36 rounded-full ring-4 ring-offset-4 ring-offset-gray-800 ring-custom-purple object-cover flex-shrink-0">
+            <div>
+                <h1 class="text-4xl font-bold">Dana Harip</h1>
+                <p class="text-base text-purple-200 font-semibold mt-1">People & Culture Specialist | MSc Behavioural Science</p>
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-1 mt-2 justify-center md:justify-start">
+                    <a href="https://danaharip.com" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-white transition-colors duration-200 inline-flex items-center gap-2 text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        danaharip.com
                     </a>
-                    <a href="https://www.linkedin.com/in/andraalexa" target="_blank" rel="noopener noreferrer" class="flex items-center hover:text-white/80 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </div>
+                <p id="main-summary" class="text-gray-300 mt-3 max-w-2xl mx-auto md:mx-0">
+                    A dedicated People & Culture professional with a foundation in behavioral science and a passion for education. I specialize in creating supportive, engaging, and efficient workplace environments where both educators and students can thrive.
+                </p>
+                <p class="text-gray-400 inline-flex items-center gap-2 text-sm mt-3 justify-center md:justify-start w-full">
+                    📍 Romania
+                </p>
+                <div class="mt-4 flex flex-wrap gap-4 justify-center md:justify-start">
+                    <a href="https://www.linkedin.com/in/dana-harip/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                         LinkedIn
                     </a>
-                    <button id="header-chat-btn" class="flex items-center hover:text-white/80 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        Chat with AI Assistant
+                    <button id="contact-button" class="inline-flex items-center gap-2 bg-custom-purple hover:opacity-90 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        Contact Me
                     </button>
                 </div>
             </div>
         </header>
 
-        <main id="resume-content" class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-            <!-- Left Column -->
-            <div class="md:col-span-2 space-y-8">
-                <!-- Summary Section -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 card">
-                    <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        Professional Summary
-                    </h2>
-                    <p class="text-slate-700 leading-relaxed">
-                        A data science professional with over 9 years of experience in both consulting and product-based companies. I've worked on diverse projects including chatbots, NLP integrated with RPA, predictive modeling, forecasting, recommender systems, and data visualization. I have a strong interest in healthcare, having been a biology Olympiad participant and admitted to Medical School, though I ultimately chose to pursue statistics.
-                    </p>
-                </section>
-
-                <!-- Experience Section -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 card">
-                     <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                        Work Experience
-                    </h2>
-                    <div class="relative border-l-2 border-slate-200 ml-2">
-                        <!-- Zurich Insurance -->
-                        <div class="mb-8 ml-8 timeline-item">
-                            <h3 class="text-lg font-semibold text-indigo-600">Senior Data Scientist</h3>
-                            <p class="font-medium text-slate-800">ZURICH INSURANCE, Barcelona</p>
-                            <p class="text-sm text-slate-500 mb-2">Mar 2021 - Present</p>
-                            <p class="text-slate-700">Working on analytical models for client risk assessment, cross-sell, and product recommendations. Collaborating with business, legal, and IT architecture teams.</p>
-                            <div class="mt-3 flex flex-wrap gap-2 items-center">
-                                <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Python</span><span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">SQL</span><span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">PowerBI</span><span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">AWS Sagemaker</span>
-                                <button class="elaborate-btn ml-auto text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md">✨ Elaborate</button>
-                            </div>
-                        </div>
-                        <!-- Accenture 1 -->
-                        <div class="mb-8 ml-8 timeline-item">
-                            <h3 class="text-lg font-semibold text-indigo-600">Data Science Senior Analyst</h3>
-                            <p class="font-medium text-slate-800">ACCENTURE, Barcelona</p>
-                            <p class="text-sm text-slate-500 mb-2">Mar 2019 - Feb 2021</p>
-                            <p class="text-slate-700">Focused on a forecasting project for a major pharma client, using statistical and ML methods for demand planning. Conducted regular client sessions and presentations.</p>
-                            <div class="mt-3 flex flex-wrap gap-2 items-center">
-                                <span class="bg-slate-200 text-slate-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">R</span><span class="bg-slate-200 text-slate-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Python</span>
-                                <button class="elaborate-btn ml-auto text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md">✨ Elaborate</button>
-                            </div>
-                        </div>
-                        <!-- Accenture 2 -->
-                         <div class="mb-8 ml-8 timeline-item">
-                            <h3 class="text-lg font-semibold text-indigo-600">Application Development Senior Analyst</h3>
-                            <p class="font-medium text-slate-800">ACCENTURE, Heerlen/Amsterdam</p>
-                            <p class="text-sm text-slate-500 mb-2">Dec 2018 - Mar 2019</p>
-                            <p class="text-slate-700">Consolidated Intelligent Automation capabilities, focusing on RPA+NLP. Maintained a C# Azure application and trained a LUIS app for NLP.</p>
-                             <div class="mt-3 flex flex-wrap gap-2 items-center">
-                                <span class="bg-slate-200 text-slate-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">MS Azure</span><span class="bg-slate-200 text-slate-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">C#</span>
-                                <button class="elaborate-btn ml-auto text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md">✨ Elaborate</button>
-                            </div>
-                        </div>
-                        <!-- Accenture 3 -->
-                        <div class="mb-8 ml-8 timeline-item">
-                            <h3 class="text-lg font-semibold text-indigo-600">Application Development Analyst</h3>
-                            <p class="font-medium text-slate-800">ACCENTURE, Heerlen/Amsterdam</p>
-                            <p class="text-sm text-slate-500 mb-2">Mar 2017 - Dec 2018</p>
-                            <p class="text-slate-700">Delivered PoCs and projects in predictive modeling, keyword extraction, and recommender systems, often combining ML with RPA. Key achievements include production delivery of an NLP robot for email routing, booth demos at World Summit AI, and leading client presentations and workshops.</p>
-                            <div class="mt-3 flex justify-end">
-                                <button class="elaborate-btn text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md">✨ Elaborate</button>
-                            </div>
-                        </div>
-                        <!-- Philips Research -->
-                        <div class="mb-8 ml-8 timeline-item">
-                            <h3 class="text-lg font-semibold text-indigo-600">Research Internship</h3>
-                            <p class="font-medium text-slate-800">PHILIPS RESEARCH, Eindhoven</p>
-                            <p class="text-sm text-slate-500 mb-2">Sep 2015 - Sep 2016</p>
-                            <p class="text-slate-700">Graduation project conducting 3D body analysis on patient data from Kinect scans with a focus on feature selection. Responsibilities included hardware set-up, programming, scanning participants, data pre-processing, and model training.</p>
-                             <div class="mt-3 flex justify-end">
-                                <button class="elaborate-btn text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md">✨ Elaborate</button>
-                            </div>
-                        </div>
-                         <!-- Donders Center -->
-                        <div class="mb-8 ml-8 timeline-item">
-                            <h3 class="text-lg font-semibold text-indigo-600">Student Assistant</h3>
-                            <p class="font-medium text-slate-800">DONDERS CENTER FOR COGNITION, Nijmegen</p>
-                            <p class="text-sm text-slate-500 mb-2">Nov 2014 - Jul 2015</p>
-                            <p class="text-slate-700">Conducted EEG test sessions for a study on attention span in patients with autism, managing lab setup, participant recruitment, and data acquisition for the control group.</p>
-                            <div class="mt-3 flex justify-end">
-                                <button class="elaborate-btn text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md">✨ Elaborate</button>
-                            </div>
-                        </div>
-                        <!-- OMV Petrom -->
-                        <div class="ml-8 timeline-item">
-                            <h3 class="text-lg font-semibold text-indigo-600">Internship, Downstream Optimisation</h3>
-                            <p class="font-medium text-slate-800">OMV PETROM ROMANIA, Bucharest</p>
-                            <p class="text-sm text-slate-500 mb-2">Summer 2014</p>
-                            <p class="text-slate-700">Designed a Microsoft Access Database to interrogate fuel contracts and presented the work to the department head. Exposed to tracking and analysis of fuels stock prices.</p>
-                        </div>
+        <!-- About Me Section -->
+        <section id="about-me" class="mb-24">
+             <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-200/80">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">About Me</h2>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center p-6 bg-purple-50/50 rounded-xl border border-purple-200/60">
+                         <div class="w-16 h-16 bg-white text-custom-purple rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h0a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3Z"/><path d="M12 10v2"/><path d="M12 12a5 5 0 0 0-5 5v5h10v-5a5 5 0 0 0-5-5Z"/></svg>
+                         </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">My Approach</h3>
+                        <p class="text-gray-600">
+                           My journey into People & Culture is driven by a core belief: understanding human behavior is key to building exceptional organizations. With an MSc in Behavioral Science, I bring an evidence-based approach to HR, creating systems that are efficient and deeply human-centered.
+                        </p>
                     </div>
-                </section>
+                    <div class="text-center p-6 bg-purple-50/50 rounded-xl border border-purple-200/60">
+                         <div class="w-16 h-16 bg-white text-custom-purple rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                         </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">My Passion</h3>
+                        <p class="text-gray-600">
+                           Education has been a constant thread in my career, from designing programs for "Save the Children" to coaching young learners. I am committed to fostering environments where staff feel valued, supported, and empowered to deliver the best educational experience.
+                        </p>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <!-- Right Column -->
-            <div class="md:col-span-1 space-y-8">
-                 <!-- Technical Skills Section -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 card">
-                    <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                        Technical Skills
-                    </h2>
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-slate-700">Good Knowledge</h4>
-                            <p class="text-slate-600">Python, R, git, SQL, MATLAB, LaTeX</p>
-                        </div>
-                         <div>
-                            <h4 class="font-semibold text-slate-700">Working Knowledge</h4>
-                            <p class="text-slate-600">Linux, C#</p>
-                        </div>
-                         <div>
-                            <h4 class="font-semibold text-slate-700">Basic Knowledge</h4>
-                            <p class="text-slate-600">C, C++</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-slate-700">Vendor Platforms</h4>
-                            <p class="text-slate-600">Azure, AWS Sagemaker, IBM Bluemix, Cogito, Dialogflow, Watson</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Featured Skills Section -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 card">
-                     <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                        Featured Skills
-                    </h2>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag bg-indigo-500 text-white text-sm font-medium px-3 py-1 rounded-md shadow-md">AI</span>
-                        <span class="skill-tag bg-indigo-500 text-white text-sm font-medium px-3 py-1 rounded-md shadow-md">Machine Learning</span>
-                        <span class="skill-tag bg-indigo-500 text-white text-sm font-medium px-3 py-1 rounded-md shadow-md">Data Science</span>
-                        <span class="skill-tag bg-indigo-500 text-white text-sm font-medium px-3 py-1 rounded-md shadow-md">Python</span>
-                        <span class="skill-tag bg-slate-200 text-slate-800 text-sm font-medium px-3 py-1 rounded-md">NLP</span>
-                        <span class="skill-tag bg-slate-200 text-slate-800 text-sm font-medium px-3 py-1 rounded-md">Recommender Systems</span>
-                        <span class="skill-tag bg-slate-200 text-slate-800 text-sm font-medium px-3 py-1 rounded-md">Forecasting</span>
-                        <span class="skill-tag bg-slate-200 text-slate-800 text-sm font-medium px-3 py-1 rounded-md">Chatbots</span>
-                        <span class="skill-tag bg-slate-200 text-slate-800 text-sm font-medium px-3 py-1 rounded-md">Research</span>
-                    </div>
-                </section>
-
-                <!-- Education Section -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 card">
-                    <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="M22 10v6M2 10.01V16M15 2l-3.5 7L8 2M12 22v-8"></path><path d="M12 22a4.5 4.5 0 0 0 4.5-4.5v-2.29a4.5 4.5 0 0 0-4.5-4.5 4.5 4.5 0 0 0-4.5 4.5v2.29A4.5 4.5 0 0 0 12 22Z"></path></svg>
-                        Education
-                    </h2>
-                     <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-slate-800">MSc. Artificial Intelligence, <span class="text-indigo-500 font-medium">bene meritum</span></h4>
-                            <p class="text-slate-600">Radboud University, Nijmegen, NL</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-slate-800">Bachelor in Economic Cybernetics</h4>
-                            <p class="text-slate-600">Bucharest Academy of Economic Studies, RO</p>
-                        </div>
-                     </div>
-                </section>
-                
-                 <!-- Volunteering Section -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 card">
-                    <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        Volunteering
-                    </h2>
-                     <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-slate-800">Master Committee Member</h4>
-                            <p class="text-slate-600">CognAc, Nijmegen, NL (2014-2016)</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-slate-800">Educational Department Member</h4>
-                            <p class="text-slate-600">Cybernetics Students Syndicate, Bucharest, RO (2012-2014)</p>
-                        </div>
-                     </div>
-                </section>
-
-                <!-- Languages Section -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 card">
-                    <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg>
-                        Languages
-                    </h2>
-                    <div class="space-y-2 text-slate-600">
-                        <p><span class="font-semibold text-slate-700">Romanian:</span> Native</p>
-                        <p><span class="font-semibold text-slate-700">English:</span> Fluent</p>
-                        <p><span class="font-semibold text-slate-700">Spanish:</span> Fluent</p>
-                        <p><span class="font-semibold text-slate-700">Portuguese:</span> Intermediate</p>
-                        <p><span class="font-semibold text-slate-700">French:</span> Intermediate</p>
-                        <p><span class="font-semibold text-slate-700">Dutch:</span> Basic</p>
-                    </div>
-                </section>
+        <!-- Core Competencies Section -->
+        <section id="competencies" class="mb-24">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Core Competencies</h2>
+            <div id="competencies-container" class="flex flex-wrap justify-center gap-3 text-center">
             </div>
-        </main>
+        </section>
+        
+        <!-- Events & Engagements Section -->
+        <section id="events-engagements" class="mb-24">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Relevant Events & Engagements</h2>
+            <p class="text-center text-gray-500 mb-10">Active participation in policy and research events.</p>
+            <div id="events-container" class="grid md:grid-cols-2 gap-6">
+            </div>
+        </section>
+
+        <!-- Career Timeline Section -->
+        <section id="career-timeline" class="mb-24">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Career & Education Timeline</h2>
+            <div id="timeline-container" class="relative">
+            </div>
+        </section>
+
     </div>
 
-    <!-- Elaboration Modal -->
-    <div id="elaboration-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 p-4 transition-opacity duration-300 opacity-0">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6 sm:p-8 relative transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
-            <button id="modal-close-btn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <h3 id="modal-title" class="text-xl font-bold text-slate-900 mb-4 pr-8">Elaboration</h3>
-            <div id="modal-body" class="text-slate-700 leading-relaxed min-h-[120px] max-h-[60vh] overflow-y-auto pr-2">
-                 <!-- Loading spinner or generated content will go here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Chat Bubble -->
-    <button id="chat-bubble" class="fixed bottom-6 right-6 bg-indigo-500 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-    </button>
-    
-    <!-- Chat Modal -->
-    <div id="chat-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 p-4 transition-opacity duration-300 opacity-0">
-        <div id="chat-container" class="bg-white rounded-2xl shadow-xl w-full max-w-lg h-[80vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0">
-            <div class="p-4 border-b flex justify-between items-center">
-                <h3 class="text-xl font-bold text-slate-900">Chat with AI Assistant</h3>
-                <button id="chat-close-btn" class="text-slate-400 hover:text-slate-600 transition-colors">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-5xl mx-auto py-12 px-4 sm:px-8 text-center">
+             <blockquote class="max-w-xl mx-auto mb-8">
+                <p class="text-lg italic text-gray-300">“Education is the passport to the future, for tomorrow belongs to those who prepare for it today.”</p>
+                <cite class="mt-4 block font-semibold not-italic text-gray-400">— Malcolm X</cite>
+            </blockquote>
+            <div class="mt-8 flex flex-wrap gap-4 justify-center">
+                <a href="https://www.linkedin.com/in/dana-harip/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    LinkedIn
+                </a>
+                <button id="contact-button-footer" class="inline-flex items-center gap-2 bg-custom-purple hover:opacity-90 font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    Contact Me
                 </button>
             </div>
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
-                <!-- Chat messages will be appended here -->
-            </div>
-            <div class="p-4 border-t">
-                <form id="chat-form" class="flex gap-2">
-                    <input type="text" id="chat-input" class="flex-1 p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Ask about Andra's experience..." required>
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-semibold flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                    </button>
-                </form>
-            </div>
+            <p class="mt-8 text-sm text-gray-500">&copy; <span id="current-year"></span> Dana Harip. All Rights Reserved.</p>
         </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="bg-gray-800 text-white text-sm font-semibold py-2 px-4 rounded-full shadow-lg">
+        Email address copied to clipboard!
     </div>
 
-
     <script>
-        // --- SCRIPT FOR ELABORATION MODAL ---
-        const elaborateButtons = document.querySelectorAll('.elaborate-btn');
-        const modal = document.getElementById('elaboration-modal');
-        const modalContent = document.getElementById('modal-content');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
+        const competenciesData = [
+            { name: "People Operations & Employee Relations", color: "purple", description: "Expertise in managing the full employee lifecycle, from recruitment and onboarding to performance management, employee relations, and offboarding." },
+            { name: "HR Program & Policy Development", color: "purple", description: "Skilled in designing, implementing, and optimizing HR policies and programs that support organizational goals and foster a positive culture." },
+            { name: "Child Education & Safeguarding", color: "purple", description: "Deeply committed to creating safe, engaging, and evidence-based educational experiences, with a strong understanding of child development and pedagogy." },
+            { name: "Behavioral Science in HR", color: "purple", description: "Leveraging a Master's in Behavioral Science to inform conflict resolution, enhance communication, and design human-centered HR systems and processes." },
+            { name: "HRIS & Process Optimization", color: "purple", description: "Proven ability to leverage technology to streamline HR workflows, improve data accuracy, and enhance the overall employee experience." },
+            { name: "Training & Development", color: "purple", description: "Experienced in designing and delivering training programs for diverse audiences, from K-12 learners to adult professionals, fostering growth and development." }
+        ];
 
-        const openElaborationModal = () => {
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modalContent.classList.remove('scale-95', 'opacity-0');
-            }, 10);
+        const timelineData = [
+            { type: 'work', date: '2023 – 2025', title: 'Co-founder & Chief of Operations', organization: 'Greenlight Path / GoVisa Lawyer', details: ["Directed all people operations, establishing robust systems for the entire employee lifecycle, including recruitment, onboarding, and performance management.", "Fostered a positive and productive remote work culture through clear communication channels and supportive policies.", "Enhanced operational efficiency by developing and implementing streamlined internal workflows."]},
+            { type: 'work', date: '2019 – 2023', title: 'Operations Manager', organization: 'GovAssist LLC', details: ["Managed the full employee lifecycle for a team growing from 30 to over 200, significantly boosting staff satisfaction through targeted initiatives.", "Developed and executed a comprehensive quality strategy that improved service delivery and employee performance.", "Drove operational improvements by redesigning workflows and integrating systems to better support staff."]},
+            { type: 'work', date: '2018 – 2020', title: 'Project Manager', organization: 'Save the Children, Romania', details: ["Designed, managed, and delivered impactful, multi-site education programs for K-12 students, ensuring alignment with pedagogical best practices.", "Successfully expanded program reach to over 5,000 children, demonstrating strong project management and community outreach skills.", "Recruited, trained, and managed a dedicated team of over 50 volunteers, fostering a collaborative and mission-driven environment."]},
+            { type: 'work', date: '2016 – 2018', title: 'Education Coach', organization: '1-2-3 Education, Romania', details: ["Developed innovative educational programs for children aged 6-10, focusing on engaging, tech-assisted learning experiences to enhance student outcomes."]},
+            { type: 'work', date: '2016', title: 'Helpline Counsellor', organization: 'Suicide Prevention Line, Romania', details: ["Provided essential front-line crisis de-escalation and emotional support, applying Cognitive Behavioral Therapy (CBT) principles with empathy and professionalism."]},
+            { type: 'education', date: '2013 - 2015', title: 'MSc in Behavioral Science', organization: 'Radboud University, NL', details: ["Gained deep expertise in the psychological drivers of human action, learning to apply evidence-based interventions to solve complex organizational and social challenges."]},
+            { type: 'education', date: '2005 - 2008', title: 'BSc in Sociology', organization: 'Alexandru Ioan Cuza University, RO', details: ["Developed a strong analytical foundation in social structures, group dynamics, and organizational theory, providing a framework for understanding workplace culture."]}
+        ];
+        
+        const eventsData = [
+            { title: "POCA project - Education Policy", year: "2019" },
+            { title: "Symposium on quantifying micro processes in intervention games", year: "2015", location: "Radboud University" },
+            { title: "Conference: “Games for Health”", year: "2014", location: "Netherlands" },
+            { title: "Workshop on developing video games for emotional well-being", year: "2014", location: "Radboud University" }
+        ];
+
+
+        const competenciesContainer = document.getElementById('competencies-container');
+        const eventContainer = document.getElementById('events-container');
+
+        const colorVariants = {
+            purple: { bg: 'bg-purple-100', text: 'text-custom-purple' }
         };
-
-        const closeElaborationModal = () => {
-            modalContent.classList.add('scale-95', 'opacity-0');
-            modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        };
-
-        elaborateButtons.forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const timelineItem = e.target.closest('.timeline-item');
-                const jobTitle = timelineItem.querySelector('h3').innerText;
-                const companyAndLocation = timelineItem.querySelector('p:nth-of-type(1)').innerText;
-                const description = timelineItem.querySelector('p:nth-of-type(3)').innerText;
-
-                modalTitle.innerText = `Elaborating on: ${jobTitle}`;
-                modalBody.innerHTML = `<div class="flex justify-center items-center h-full py-10"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div></div>`;
-                openElaborationModal();
-
-                const systemPrompt = "You are a helpful career assistant and expert in data science recruitment. Based on a snippet from a data scientist's resume, elaborate on the role in a single, detailed paragraph. Focus on the potential responsibilities, key achievements, and skills demonstrated that would be valuable to a hiring manager. The tone should be professional, insightful, and confident.";
-                const userQuery = `Please elaborate on this role from a resume:\n- Job Title: ${jobTitle}\n- Company: ${companyAndLocation}\n- Description: ${description}`;
-                
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-                try {
-                    const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] } };
-                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
-                    const result = await response.json();
-                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                    modalBody.innerText = text || 'No elaboration could be generated.';
-                } catch (error) {
-                    console.error('Error fetching elaboration:', error);
-                    modalBody.innerText = 'Sorry, an error occurred while generating the elaboration. Please try again in a moment.';
-                }
-            });
+        
+        competenciesData.forEach(item => {
+            const colors = colorVariants[item.color] || colorVariants.purple;
+            competenciesContainer.innerHTML += `
+                <div class="relative group">
+                    <span class="${colors.bg} ${colors.text} text-sm font-semibold px-4 py-2 rounded-full cursor-pointer">${item.name}</span>
+                    <div class="tooltip-custom absolute bottom-full mb-2 w-64 p-3 ${colors.bg} border border-gray-200 rounded-lg shadow-lg text-sm text-left text-gray-700 opacity-0 group-hover:opacity-100 invisible group-hover:visible z-10">
+                        ${item.description}
+                    </div>
+                </div>
+            `;
+        });
+        
+        eventsData.forEach((item) => {
+            eventContainer.innerHTML += `
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <div class="flex items-center gap-3">
+                         <div class="w-10 h-10 bg-purple-100 text-custom-purple rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.282-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.124-1.282-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                         </div>
+                        <div>
+                             <h3 class="font-semibold text-base text-gray-800">${item.title}</h3>
+                             <p class="text-sm text-gray-500 mt-1">${item.year}${item.location ? ', ' + item.location : ''}</p>
+                        </div>
+                    </div>
+                </div>`;
         });
 
-        modalCloseBtn.addEventListener('click', closeElaborationModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeElaborationModal(); });
-        document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !modal.classList.contains('hidden')) closeElaborationModal(); });
-        
-        // --- SCRIPT FOR CHAT FEATURE ---
-        const chatBubble = document.getElementById('chat-bubble');
-        const headerChatBtn = document.getElementById('header-chat-btn');
-        const chatModal = document.getElementById('chat-modal');
-        const chatContainer = document.getElementById('chat-container');
-        const chatCloseBtn = document.getElementById('chat-close-btn');
-        const chatForm = document.getElementById('chat-form');
-        const chatInput = document.getElementById('chat-input');
-        const chatMessages = document.getElementById('chat-messages');
-
-        let chatHistory = [];
-        const resumeText = document.getElementById('resume-content').innerText;
-
-        const openChatModal = () => {
-            chatModal.classList.remove('hidden');
-            setTimeout(() => {
-                chatModal.classList.remove('opacity-0');
-                chatContainer.classList.remove('scale-95', 'opacity-0');
-            }, 10);
-            if(chatMessages.children.length === 0) {
-                 appendMessage('assistant', 'Hello! I am Andra\'s AI Assistant. How can I help you today? Ask me anything about her resume.');
-            }
+        const timelineContainer = document.getElementById('timeline-container');
+        const timelineColors = {
+            work: { text: 'text-custom-purple', dot: 'timeline-dot-work' },
+            education: { text: 'text-red-600', dot: 'timeline-dot-education' }
         };
 
-        const closeChatModal = () => {
-            chatContainer.classList.add('scale-95', 'opacity-0');
-            chatModal.classList.add('opacity-0');
-            setTimeout(() => chatModal.classList.add('hidden'), 300);
-        };
-        
-        const appendMessage = (role, text) => {
-            const messageWrapper = document.createElement('div');
-            messageWrapper.className = `chat-message flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+        timelineData.forEach(item => {
+            const hasDetails = item.details && item.details.length > 0;
+            const colors = timelineColors[item.type];
+            const detailsHtml = hasDetails ? `<ul class="list-disc pl-5 space-y-1 text-gray-600">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>` : '';
+            const chevronHtml = hasDetails ? `<svg class="chevron w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>` : '';
             
-            const messageBubble = document.createElement('div');
-            messageBubble.className = `chat-message-bubble max-w-sm p-3 rounded-2xl ${role === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-800'}`;
-            messageBubble.innerText = text;
-            
-            messageWrapper.appendChild(messageBubble);
-            chatMessages.appendChild(messageWrapper);
-            chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to bottom
-        };
-
-        const handleChatSubmit = async (e) => {
-            e.preventDefault();
-            const userMessage = chatInput.value.trim();
-            if (!userMessage) return;
-
-            appendMessage('user', userMessage);
-            chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
-            chatInput.value = '';
-            chatInput.disabled = true;
-
-            // Add typing indicator
-            const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'chat-message flex justify-start';
-            typingIndicator.innerHTML = `<div class="chat-message-bubble bg-slate-100 text-slate-800 p-3 rounded-2xl flex items-center space-x-1">
-                <span class="animate-pulse w-2 h-2 bg-slate-400 rounded-full"></span>
-                <span class="animate-pulse delay-75 w-2 h-2 bg-slate-400 rounded-full"></span>
-                <span class="animate-pulse delay-150 w-2 h-2 bg-slate-400 rounded-full"></span>
+            timelineContainer.innerHTML += `
+            <div class="timeline-item relative pl-12 pb-8">
+                <div class="timeline-dot ${colors.dot}"></div>
+                <div class="card bg-white p-5 rounded-lg border border-gray-200/80 shadow-sm ${hasDetails ? 'cursor-pointer' : ''}">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <time class="mb-1 text-xs font-semibold uppercase tracking-wider ${colors.text}">${item.type}</time>
+                            <h3 class="text-lg font-semibold text-gray-800">${item.title}</h3>
+                            <p class="text-md font-medium text-gray-500">${item.organization}</p>
+                            <p class="text-sm text-gray-400 mt-1">${item.date}</p>
+                        </div>
+                        ${chevronHtml}
+                    </div>
+                    <div class="card-details">
+                        ${detailsHtml}
+                    </div>
+                </div>
             </div>`;
-            chatMessages.appendChild(typingIndicator);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            const systemPrompt = `You are an AI assistant for Andra Alexă's personal resume webpage. Your name is "Andra's AI Assistant". You MUST answer questions based ONLY on the provided resume text that follows. Do not invent information or answer questions outside of this context. If a question cannot be answered from the resume, politely state that the information is not available. Be friendly, professional, and concise. The user is likely a recruiter. Here is the resume text: \n\n${resumeText}`;
-            
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-            try {
-                const payload = {
-                    contents: chatHistory,
-                    systemInstruction: { parts: [{ text: systemPrompt }] }
-                };
-
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
-                
-                const result = await response.json();
-                const modelMessage = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                
-                chatMessages.removeChild(typingIndicator);
-
-                if (modelMessage) {
-                    appendMessage('assistant', modelMessage);
-                    chatHistory.push({ role: 'model', parts: [{ text: modelMessage }] });
-                } else {
-                     appendMessage('assistant', 'I apologize, I could not generate a response.');
-                }
-            } catch (error) {
-                console.error('Error with chat API:', error);
-                chatMessages.removeChild(typingIndicator);
-                appendMessage('assistant', 'Sorry, an error occurred. Please try again.');
-            } finally {
-                 chatInput.disabled = false;
-                 chatInput.focus();
+        });
+        
+        document.querySelectorAll('.card').forEach(card => {
+            if (card.querySelector('.card-details') && card.querySelector('.card-details').innerHTML.trim() !== '') {
+                card.addEventListener('click', () => card.classList.toggle('open'));
             }
+        });
+        
+        const toast = document.getElementById('toast');
+        const handleContactClick = (event) => {
+            event.preventDefault();
+            const email = 'danaharip@protonmail.com';
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = email;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textarea);
+
+            window.location.href = `mailto:${email}`;
         };
 
-        chatBubble.addEventListener('click', openChatModal);
-        headerChatBtn.addEventListener('click', openChatModal);
-        chatCloseBtn.addEventListener('click', closeChatModal);
-        chatModal.addEventListener('click', (e) => { if (e.target === chatModal) closeChatModal(); });
-        chatForm.addEventListener('submit', handleChatSubmit);
-        document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !chatModal.classList.contains('hidden')) closeChatModal(); });
+        document.getElementById('contact-button').addEventListener('click', handleContactClick);
+        document.getElementById('contact-button-footer').addEventListener('click', handleContactClick);
 
+        document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
-
 </body>
 </html>
-
-
 
